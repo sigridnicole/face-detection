@@ -1,0 +1,27 @@
+.Tilt {
+  background: linear-gradient(to right, rgb(62, 180, 204), rgb(255, 74, 255));
+}
+
+p {
+  font-size: 50px;
+  background: -webkit-linear-gradient(#28f19c, #02a3f8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.final {
+  height: 50px;
+  width: auto;
+}
+
+div{
+  margin: 0;
+  padding: 0;
+}
+
+.logoflex {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+}

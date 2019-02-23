@@ -1,0 +1,30 @@
+ul {
+  display: flex;
+  list-style: none;
+  justify-content: flex-end;
+  margin: 0px;
+  padding: 0;
+}
+
+.lef {
+  margin-left: auto;
+  display: flex;
+  list-style: none;
+  justify-content: flex-end;
+}
+
+nav {
+  margin: 0px;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  margin: 0px;
+  padding: 0;
+}
+
