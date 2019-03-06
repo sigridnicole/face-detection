@@ -1,5 +1,4 @@
 import React from 'react';
-import './Register.css';
 
 class Register extends React.Component {
   constructor (props) {
@@ -37,11 +36,9 @@ class Register extends React.Component {
   }
 
   validateEmail = (email) => {
-    // const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(email);
   }
-
 
   onPasswordChange = (event) => {
     this.setState({password: event.target.value})
@@ -52,7 +49,7 @@ class Register extends React.Component {
     if (password.length < 6) {
       this.setState({
         invalidPassword: true,
-        errorReason: 'Password must be atleast 6 characters.'
+        errorReason: 'Atleast 6 characters password.'
       })
     } else {
       this.setState({
@@ -62,7 +59,6 @@ class Register extends React.Component {
     }
   }
   
-
   onSubmitRegister = () => {
 
     const {email, name, password, errorReason, invalidEmail, invalidPassword} = this.state;
@@ -92,21 +88,17 @@ class Register extends React.Component {
       })
     } 
   }
+
+  handleKeyPress = (event) => {
+    if(event.key === 'Enter'){
+      this.onSubmitRegister();
+    }
+  }
     
   render () { 
     
-    const { 
-      errorReason, 
-      invalidEmail, 
-      invalidPassword 
-    } = this.state;
-
-    const { 
-      onPasswordChange, 
-      onSubmitRegister, 
-      onNameChange, 
-      onEmailChange 
-    } = this;
+    const { errorReason, invalidEmail, invalidPassword } = this.state;
+    const { onPasswordChange, onSubmitRegister, onNameChange, onEmailChange } = this;
 
     let errorClass = 'no-error';
     let emailClass = 'b--white-80'
@@ -124,50 +116,54 @@ class Register extends React.Component {
     }
 
     return (
-      <article className="br3 ba white b--white-80 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center bg-black-30">
+      <article className="br3 ba white b--white-80 mv5 w-75 w-50-m w-25-l mw7 shadow-5 center bg-black-30">
         <main className="pa4 white-80">
           <div className="measure">
-            <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-              <legend className="f1 fw6 ph0 mh0">Register</legend>
+            <fieldset id="sign_up" className="ba b--transparent pa0 mh0">
+              <legend className="f1 fw5 ph0 mh0">Register</legend>
               <div className="mt3">
-                <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
+                <label className="db fw4 lh-copy f6" htmlFor="name">Name</label>
                 <input 
+                  onKeyPress =  {this.handleKeyPress}
                   className={`pa2 white input-reset ba bg-transparent hover-bg-white-30 hover-white w-100 outline-0 ${nameClass}`}
                   type="text" 
                   name="name"  
                   id="name"
+                  title="What's your name?"
                   onChange={onNameChange}
                 />
               </div>
               <div className="mt3">
-                <label className="mt3 db fw6 lh-copy f6" htmlFor="email-address">Email</label>
+                <label className="mt3 db fw4 lh-copy f6" htmlFor="email-address">Email</label>
                 <input 
+                  onKeyPress =  {this.handleKeyPress}
                   className={`pa2 white input-reset ba bg-transparent hover-bg-white-30 hover-white w-100 outline-0 ${emailClass}`}
                   type="email" 
                   name="email-address"  
                   id="email-address"
+                  title="Enter a valid email address."
                   onChange={onEmailChange}
                 />
-                {/* <EmailMsg /> */}
               </div>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
+                <label className="db fw4 lh-copy f6" htmlFor="password">Password</label>
                 <input 
+                  onKeyPress =  {this.handleKeyPress}
                   className={`pa2 white input-reset ba bg-transparent hover-bg-white-30 hover-white w-100 outline-0 ${passwordClass}`} 
                   type="password" 
                   name="password"  
-                  id="password"                   
+                  id="password"
                   onChange={onPasswordChange}
                 />
               </div>
             </fieldset>
-            <div className={errorClass}>
+            <div className={`f7 fw1 red ${errorClass}`}>
               {`${errorReason}`}
             </div>
-            <div className='pa3'>
+            <div className='pt3'>
               <input 
                 onClick = {onSubmitRegister}
-                className="white-80 b--white-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
+                className="white-80 b--white-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 fw4 dib" 
                 type="submit" 
                 value="Register" 
               />

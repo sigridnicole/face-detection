@@ -4,10 +4,18 @@ body {
   font-family: "Courier New", Consolas;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background: linear-gradient(to right, rgb(62, 180, 204), rgb(255, 74, 255)); */
   background: #0F0F0F;
 }
 
 button {
   cursor: pointer;
+}
+
+
+.no-error{
+  visibility: hidden;
+}
+
+.show-error-message{
+  visibility: visible;
 }

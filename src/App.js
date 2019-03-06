@@ -20,7 +20,6 @@ import Register from './components/Register/Register';
     line_linked: {
       shadow: {
         enable: true,
-        // color: "#3CA9D1",
         color: "#27682C",
         blur: 7
       }
@@ -31,7 +30,7 @@ import Register from './components/Register/Register';
 const initialState = {
   input: '',
       imageURL: '',
-      box: {},
+      box: [],
       route: 'SignIn',
       isSignedIn: false,
       user: {
@@ -49,7 +48,7 @@ class App extends Component {
     this.state = {
       input: '',
       imageURL: '',
-      box: {},
+      box: [],
       route: 'SignIn',
       isSignedIn: false,
       user: {
@@ -73,20 +72,23 @@ class App extends Component {
   }
 
   calcFaceLocation = (data) => {
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const faceBoxes = []
     const image = document.getElementById('inputImage');
     const width = Number(image.width);
     const height = Number(image.height);
-    return {
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - (clarifaiFace.right_col * width),
-      leftCol: clarifaiFace.left_col * width,
-      bottomRow: height - (clarifaiFace.bottom_row * height)
-    }    
-  }
-
-  displayFaceBox = (box) => {
-    this.setState({box: box});
+    const clarifaiFace = data.outputs[0].data.regions;
+    clarifaiFace.forEach(eachRegion => {
+      const { top_row, left_col, bottom_row, right_col } = eachRegion.region_info.bounding_box
+      const boxCoordinates = {
+        top: height * top_row,
+        right: width - width * right_col,
+        bottom: height - height * bottom_row,
+        left: width * left_col
+      }
+      faceBoxes.push(boxCoordinates)
+    })
+    this.setState({box: faceBoxes})
+    return faceBoxes 
   }
 
   onInputChange = (event) => {
@@ -94,6 +96,8 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
+    console.log("input image",this.state.input);
+    
     this.setState({imageURL: this.state.input});
     fetch('https://facecounter.herokuapp.com/imageurl', {
       method: 'post',
@@ -117,8 +121,8 @@ class App extends Component {
             this.setState(Object.assign(this.state.user, {entries: count}))
           })
           .catch(console.log())
-      } 
-      this.displayFaceBox(this.calcFaceLocation(response))
+      }
+      this.calcFaceLocation(response)      
     })
     .catch(err => console.log(err));
   }
@@ -152,7 +156,8 @@ class App extends Component {
               </div>
             : (
               route === 'SignIn'
-              ? <SignIn loadUser = {this.loadUser} onRouteChange = {this.onRouteChange}/> 
+              ? 
+                <SignIn loadUser = {this.loadUser} onRouteChange = {this.onRouteChange}/>
               : <Register loadUser = {this.loadUser} onRouteChange = {this.onRouteChange}/>              
               )            
         }
