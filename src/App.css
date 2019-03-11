@@ -15,3 +15,11 @@
   bottom: 0;
   z-index: -1;
 }
+
+legend, .count {
+  font-size: 50px;
+  background: -webkit-linear-gradient(#28f19c, #02a3f8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

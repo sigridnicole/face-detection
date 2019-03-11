@@ -25,7 +25,7 @@ class Register extends React.Component {
     if (!emailValid) {
       this.setState({
         invalidEmail: true,
-        errorReason:'Please enter a valid email.'
+        errorReason:'Please enter a valid email'
       })
     } else {
       this.setState({
@@ -49,7 +49,7 @@ class Register extends React.Component {
     if (password.length < 6) {
       this.setState({
         invalidPassword: true,
-        errorReason: 'Atleast 6 characters password.'
+        errorReason: 'At least 6 characters password'
       })
     } else {
       this.setState({
@@ -62,9 +62,13 @@ class Register extends React.Component {
   onSubmitRegister = () => {
 
     const {email, name, password, errorReason, invalidEmail, invalidPassword} = this.state;
+    console.log(this.state);
+    
     
     if (!email || !name || !password) {
-      this.setState({errorReason: 'Incomplete form.'})
+      this.setState({errorReason: 'Incomplete form'})
+    } else if (errorReason || invalidEmail || invalidPassword) {
+      this.setState({errorReason: errorReason})
     } else {
       this.setState({errorReason: ''})
     }
@@ -100,7 +104,7 @@ class Register extends React.Component {
     const { errorReason, invalidEmail, invalidPassword } = this.state;
     const { onPasswordChange, onSubmitRegister, onNameChange, onEmailChange } = this;
 
-    let errorClass = 'no-error';
+    let errorClass = 'no-error ';
     let emailClass = 'b--white-80'
     let nameClass = 'b--white-80'
     let passwordClass = 'b--white-80'
@@ -158,7 +162,7 @@ class Register extends React.Component {
               </div>
             </fieldset>
             <div className={`f7 fw1 red ${errorClass}`}>
-              {`${errorReason}`}
+              {`${errorReason}.`}
             </div>
             <div className='pt3'>
               <input 
@@ -168,6 +172,11 @@ class Register extends React.Component {
                 value="Register" 
               />
             </div>
+            <div className="lh-copy mt3">
+              <p
+                onClick = {() => this.props.onRouteChange('SignIn')} 
+                className="white-80 f6 link dim db pointer ma0">Have an account? Sign in.</p>
+              </div>
           </div>
         </main>
       </article>

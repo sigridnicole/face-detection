@@ -1,5 +1,4 @@
 import React from 'react';
-import About from '../About/About';
 
 class SignIn extends React.Component {
   constructor (props) {
@@ -60,8 +59,7 @@ class SignIn extends React.Component {
 
     return (
       <div>
-        <About /> 
-        <article className="br3 br--right ba dark-gray b--white-80 mv5 w-75 w-50-m w-25-l mw7 shadow-5 center bg-black-30">
+        <article className="br3 ba dark-gray b--white-80 mv5 w-75 w-50-m w-25-l mw7 shadow-5 center bg-black-30">
           <main className="pa4 white-80">
             <div className="measure">
               <fieldset id="sign_up" className="ba b--transparent pa0 mh0">

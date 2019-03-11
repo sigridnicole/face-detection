@@ -6,12 +6,13 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Particles from 'react-particles-js';
 import './App.css';
 import SignIn from './components/SignIn/SignIn';
+import About from './components/About/About';
 import Register from './components/Register/Register';
 
  const particlesOptions = {
   particles: {
     number: {
-      value: 80,
+      value: 50,
       density: {
         enable: true,
         value_area: 1000
@@ -20,8 +21,8 @@ import Register from './components/Register/Register';
     line_linked: {
       shadow: {
         enable: true,
-        color: "#27682C",
-        blur: 7
+        color: "#149df2",
+        blur: 0
       }
     }
   }
@@ -31,13 +32,14 @@ const initialState = {
   input: '',
       imageURL: '',
       box: [],
-      route: 'SignIn',
+      route: 'Start',
       isSignedIn: false,
       user: {
         id: '',
         name: '',
         email: '',
         entries: 0,
+        faceCount:0,
         joined: '' 
       }
 }
@@ -49,25 +51,28 @@ class App extends Component {
       input: '',
       imageURL: '',
       box: [],
-      route: 'SignIn',
+      route: 'Start',
       isSignedIn: false,
       user: {
         id: '',
         name: '',
         email: '',
         entries: 0,
+        faceCount: 0,
         joined: ''   
       }
     }
   }
 
   loadUser = (data) => {
+    console.log("user facecount", this.state.user.faceCount);
     this.setState( {user: {
       id: data.id,
       name: data.name,
       email: data.email,
       entries: data.entries,
-      joined: data.joined  
+      joined: data.joined,
+      faceCount: this.state.user.faceCount
     }})
   }
 
@@ -91,13 +96,19 @@ class App extends Component {
     return faceBoxes 
   }
 
+  countFaces = (response) => {
+    const count = response.outputs[0].data.regions.length;
+    this.setState(Object.assign(this.state.user, {faceCount: count}) )
+    console.log('faceCount in count faces',this.state.user.faceCount);
+    return count;
+  }
+
   onInputChange = (event) => {
     this.setState({input: event.target.value});
   }
 
   onButtonSubmit = () => {
     console.log("input image",this.state.input);
-    
     this.setState({imageURL: this.state.input});
     fetch('https://facecounter.herokuapp.com/imageurl', {
       method: 'post',
@@ -109,11 +120,13 @@ class App extends Component {
     .then(response => response.json())
     .then(response => {
       if (response) {
+        this.countFaces(response);
         fetch('https://facecounter.herokuapp.com/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            id: this.state.user.id
+            id: this.state.user.id,
+            entries: this.state.user.faceCount
           })
         })
           .then(response => response.json())
@@ -128,6 +141,7 @@ class App extends Component {
   }
 
   onRouteChange = (route) => {
+    console.log('route',route);
     if (route === 'signout') {
       this.setState(initialState)
     } else if (route === 'home') {
@@ -146,19 +160,25 @@ class App extends Component {
             onRouteChange = {this.onRouteChange}
         />
           { route === 'home' 
-            ? <div> 
-                <Rank name={this.state.user.name} entries={this.state.user.entries}/>
+            ? 
+            <div> 
+                <Rank name={this.state.user.name} entries={this.state.user.entries} faceCount= {this.state.user.faceCount}/>
                 <ImageLinkForm 
                   onInputChange = {this.onInputChange} 
                   onButtonSubmit = {this.onButtonSubmit}
                 />        
-                <FaceDetection box={box} imageURL={imageURL} />
+                <FaceDetection box={box} imageURL={imageURL}/>
               </div>
+
             : (
-              route === 'SignIn'
-              ? 
-                <SignIn loadUser = {this.loadUser} onRouteChange = {this.onRouteChange}/>
-              : <Register loadUser = {this.loadUser} onRouteChange = {this.onRouteChange}/>              
+              route === 'Start'
+              ?
+                <About onRouteChange = {this.onRouteChange}/>
+              :
+                (route === 'SignIn'
+                ? 
+                  <SignIn loadUser = {this.loadUser} onRouteChange = {this.onRouteChange}/>
+                : <Register loadUser = {this.loadUser} onRouteChange = {this.onRouteChange}/>  )            
               )            
         }
       </div>
