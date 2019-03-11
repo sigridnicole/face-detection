@@ -117,7 +117,7 @@ class App extends Component {
   onButtonSubmit = () => {
     console.log("input image", this.state.input);
     this.setState({ imageURL: this.state.input });
-    fetch("https://facecounter.herokuapp.com/imageurl", {
+    fetch("https://facecounterapp.herokuapp.com/imageurl", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -128,7 +128,7 @@ class App extends Component {
       .then(response => {
         if (response) {
           this.countFaces(response);
-          fetch("https://facecounter.herokuapp.com/image", {
+          fetch("https://facecounterapp.herokuapp.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

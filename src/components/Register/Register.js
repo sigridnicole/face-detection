@@ -79,7 +79,7 @@ class Register extends React.Component {
     }
 
     if (!errorReason && !invalidEmail && !invalidPassword) {
-      fetch("https://facecounter.herokuapp.com/register", {
+      fetch("https://facecounterapp.herokuapp.com/register", {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
