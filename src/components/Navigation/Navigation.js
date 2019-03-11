@@ -2,7 +2,6 @@ import React from 'react';
 import Logo from '../Logo/Logo';
 import source from './Icons/source.png';
 import logout from './Icons/logout.png';
-import './Navigation.css';
 
 const Navigation = ({onRouteChange, isSignedIn}) => {
   if (isSignedIn) {

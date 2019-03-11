@@ -1,122 +1,131 @@
-import React from 'react';
+import React from "react";
 
 class Register extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      password: '',
+      name: "",
+      email: "",
+      password: "",
       invalidEmail: false,
       invalidPassword: false,
-      errorReason: ''
-    }
+      errorReason: ""
+    };
   }
 
-  onNameChange = (event) => {
+  onNameChange = event => {
     this.setState({
       name: event.target.value
-    })
-  }
-  
-  onEmailChange = (event) => {
-    this.setState({email: event.target.value})
-    const emailValid = this.validateEmail(event.target.value)
+    });
+  };
+
+  onEmailChange = event => {
+    this.setState({ email: event.target.value });
+    const emailValid = this.validateEmail(event.target.value);
     if (!emailValid) {
       this.setState({
         invalidEmail: true,
-        errorReason:'Please enter a valid email'
-      })
+        errorReason: "Please enter a valid email"
+      });
     } else {
       this.setState({
         invalidEmail: false,
-        errorReason:''
-      })
+        errorReason: ""
+      });
     }
-  }
+  };
 
-  validateEmail = (email) => {
-    const re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  validateEmail = email => {
+    const re = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
-  }
+  };
 
-  onPasswordChange = (event) => {
-    this.setState({password: event.target.value})
-    this.validatePassword(event.target.value)
-  }
+  onPasswordChange = event => {
+    this.setState({ password: event.target.value });
+    this.validatePassword(event.target.value);
+  };
 
-  validatePassword = (password) => {
+  validatePassword = password => {
     if (password.length < 6) {
       this.setState({
         invalidPassword: true,
-        errorReason: 'At least 6 characters password'
-      })
+        errorReason: "At least 6 characters password"
+      });
     } else {
       this.setState({
         invalidPassword: false,
-        errorReason: ''
-      }) 
+        errorReason: ""
+      });
     }
-  }
-  
-  onSubmitRegister = () => {
+  };
 
-    const {email, name, password, errorReason, invalidEmail, invalidPassword} = this.state;
+  onSubmitRegister = () => {
+    const {
+      email,
+      name,
+      password,
+      errorReason,
+      invalidEmail,
+      invalidPassword
+    } = this.state;
     console.log(this.state);
-    
-    
+
     if (!email || !name || !password) {
-      this.setState({errorReason: 'Incomplete form'})
+      this.setState({ errorReason: "Incomplete form" });
     } else if (errorReason || invalidEmail || invalidPassword) {
-      this.setState({errorReason: errorReason})
+      this.setState({ errorReason: errorReason });
     } else {
-      this.setState({errorReason: ''})
+      this.setState({ errorReason: "" });
     }
 
     if (!errorReason && !invalidEmail && !invalidPassword) {
-      fetch('https://facecounter.herokuapp.com/register',{
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
+      fetch("https://facecounter.herokuapp.com/register", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: this.state.name,
           email: this.state.email,
           password: this.state.password
         })
       })
-      .then(response => response.json())
-      .then(user => {
-        if (user.id){
-          this.props.loadUser(user)
-          this.props.onRouteChange('home');
-        }
-      })
-    } 
-  }
+        .then(response => response.json())
+        .then(user => {
+          if (user.id) {
+            this.props.loadUser(user);
+            this.props.onRouteChange("home");
+          }
+        });
+    }
+  };
 
-  handleKeyPress = (event) => {
-    if(event.key === 'Enter'){
+  handleKeyPress = event => {
+    if (event.key === "Enter") {
       this.onSubmitRegister();
     }
-  }
-    
-  render () { 
-    
-    const { errorReason, invalidEmail, invalidPassword } = this.state;
-    const { onPasswordChange, onSubmitRegister, onNameChange, onEmailChange } = this;
+  };
 
-    let errorClass = 'no-error ';
-    let emailClass = 'b--white-80'
-    let nameClass = 'b--white-80'
-    let passwordClass = 'b--white-80'
+  render() {
+    const { errorReason, invalidEmail, invalidPassword } = this.state;
+    const {
+      onPasswordChange,
+      onSubmitRegister,
+      onNameChange,
+      onEmailChange
+    } = this;
+
+    let errorClass = "no-error ";
+    let emailClass = "b--white-80";
+    let nameClass = "b--white-80";
+    let passwordClass = "b--white-80";
 
     if (invalidPassword) {
-      passwordClass = 'b--red'
+      passwordClass = "b--red";
     }
     if (invalidEmail) {
-      emailClass = 'b--red'
+      emailClass = "b--red";
     }
     if (errorReason) {
-      errorClass='show-error-message-yes';
+      errorClass = "show-error-message-yes";
     }
 
     return (
@@ -126,36 +135,45 @@ class Register extends React.Component {
             <fieldset id="sign_up" className="ba b--transparent pa0 mh0">
               <legend className="f1 fw5 ph0 mh0">Register</legend>
               <div className="mt3">
-                <label className="db fw4 lh-copy f6" htmlFor="name">Name</label>
-                <input 
-                  onKeyPress =  {this.handleKeyPress}
+                <label className="db fw4 lh-copy f6" htmlFor="name">
+                  Name
+                </label>
+                <input
+                  onKeyPress={this.handleKeyPress}
                   className={`pa2 white input-reset ba bg-transparent hover-bg-white-30 hover-white w-100 outline-0 ${nameClass}`}
-                  type="text" 
-                  name="name"  
+                  type="text"
+                  name="name"
                   id="name"
                   title="What's your name?"
                   onChange={onNameChange}
                 />
               </div>
               <div className="mt3">
-                <label className="mt3 db fw4 lh-copy f6" htmlFor="email-address">Email</label>
-                <input 
-                  onKeyPress =  {this.handleKeyPress}
+                <label
+                  className="mt3 db fw4 lh-copy f6"
+                  htmlFor="email-address"
+                >
+                  Email
+                </label>
+                <input
+                  onKeyPress={this.handleKeyPress}
                   className={`pa2 white input-reset ba bg-transparent hover-bg-white-30 hover-white w-100 outline-0 ${emailClass}`}
-                  type="email" 
-                  name="email-address"  
+                  type="email"
+                  name="email-address"
                   id="email-address"
                   title="Enter a valid email address."
                   onChange={onEmailChange}
                 />
               </div>
               <div className="mv3">
-                <label className="db fw4 lh-copy f6" htmlFor="password">Password</label>
-                <input 
-                  onKeyPress =  {this.handleKeyPress}
-                  className={`pa2 white input-reset ba bg-transparent hover-bg-white-30 hover-white w-100 outline-0 ${passwordClass}`} 
-                  type="password" 
-                  name="password"  
+                <label className="db fw4 lh-copy f6" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  onKeyPress={this.handleKeyPress}
+                  className={`pa2 white input-reset ba bg-transparent hover-bg-white-30 hover-white w-100 outline-0 ${passwordClass}`}
+                  type="password"
+                  name="password"
                   id="password"
                   onChange={onPasswordChange}
                 />
@@ -164,19 +182,22 @@ class Register extends React.Component {
             <div className={`f7 fw1 red ${errorClass}`}>
               {`${errorReason}.`}
             </div>
-            <div className='pt3'>
-              <input 
-                onClick = {onSubmitRegister}
-                className="white-80 b--white-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 fw4 dib" 
-                type="submit" 
-                value="Register" 
+            <div className="pt3">
+              <input
+                onClick={onSubmitRegister}
+                className="white-80 b--white-80 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 fw4 dib"
+                type="submit"
+                value="Register"
               />
             </div>
             <div className="lh-copy mt3">
               <p
-                onClick = {() => this.props.onRouteChange('SignIn')} 
-                className="white-80 f6 link dim db pointer ma0">Have an account? Sign in.</p>
-              </div>
+                onClick={() => this.props.onRouteChange("SignIn")}
+                className="white-80 f6 link dim db pointer ma0"
+              >
+                Have an account? Sign in.
+              </p>
+            </div>
           </div>
         </main>
       </article>
