@@ -3,11 +3,11 @@ import React from "react";
 const ImageLinkForm = ({ onInputChange, onButtonSubmit }) => {
   return (
     <div>
-      <div className="center pa1">
+       <div className="center pa1">
         <div className="pa4 br3 shadow-5 bg-black-80 center f5">
           <input
             type="text"
-            placeholder="Image address/URL"
+            placeholder="Image address"
             className="f4 pa2 w-70 center dib"
             onChange={onInputChange}
           />
@@ -19,7 +19,8 @@ const ImageLinkForm = ({ onInputChange, onButtonSubmit }) => {
           </button>
         </div>
       </div>
-    </div>
+      <p className="white-50 f7">Test image: https://images.says.com/uploads/story_source/source_image/521350/94e6.jpg </p>
+    </div>    
   );
 };
 
