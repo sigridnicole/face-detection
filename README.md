@@ -1,4 +1,5 @@
-#FaceCounter
+###FaceCounter
+
 Is a react app that can detect and count faces for you. 
 See the live site here: http://facecounter.herokuapp.com/
 
