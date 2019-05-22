@@ -21,23 +21,29 @@ class SignIn extends React.Component {
     this.setState({ validCredentials: false });
   };
 
+  saveTokeninLocalStorage = (token) => {
+    localStorage.setItem('token', token)
+  }
+
   onSubmitSignIn = () => {
     fetch("https://facecounterapp.herokuapp.com/signin", {
       method: "post",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         email: this.state.signInEmail,
         password: this.state.signInPassword
       })
     })
       .then(response => response.json())
-      .then(user => {
-        if (user.id) {
-          this.props.loadUser(user);
+      .then(data => {
+        if (data) {
+          this.saveTokeninLocalStorage(data.token)
+          this.props.loadUser(data.user);
           this.props.onRouteChange("home");
         } else {
           this.onWrongCredentials();
-          console.log(this.state.validCredentials);
         }
       });
   };

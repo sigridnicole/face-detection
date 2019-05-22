@@ -68,7 +68,6 @@ class Register extends React.Component {
       invalidEmail,
       invalidPassword
     } = this.state;
-    console.log(this.state);
 
     if (!email || !name || !password) {
       this.setState({ errorReason: "Incomplete form" });

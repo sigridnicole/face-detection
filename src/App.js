@@ -45,6 +45,7 @@ const initialState = {
 };
 
 class App extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -65,7 +66,6 @@ class App extends Component {
   }
 
   loadUser = data => {
-    console.log("user facecount", this.state.user.faceCount);
     this.setState({
       user: {
         id: data.id,
@@ -106,7 +106,6 @@ class App extends Component {
   countFaces = response => {
     const count = response.outputs[0].data.regions.length;
     this.setState(Object.assign(this.state.user, { faceCount: count }));
-    console.log("faceCount in count faces", this.state.user.faceCount);
     return count;
   };
 
@@ -114,12 +113,15 @@ class App extends Component {
     this.setState({ input: event.target.value });
   };
 
+
   onButtonSubmit = () => {
-    console.log("input image", this.state.input);
     this.setState({ imageURL: this.state.input });
     fetch("https://facecounterapp.herokuapp.com/imageurl", {
       method: "post",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem('token')
+      },
       body: JSON.stringify({
         input: this.state.input
       })
@@ -148,7 +150,6 @@ class App extends Component {
   };
 
   onRouteChange = route => {
-    console.log("route", route);
     if (route === "signout") {
       this.setState(initialState);
     } else if (route === "home") {
@@ -184,11 +185,11 @@ class App extends Component {
         ) : route === "SignIn" ? (
           <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         ) : (
-          <Register
-            loadUser={this.loadUser}
-            onRouteChange={this.onRouteChange}
-          />
-        )}
+                <Register
+                  loadUser={this.loadUser}
+                  onRouteChange={this.onRouteChange}
+                />
+              )}
       </div>
     );
   }
