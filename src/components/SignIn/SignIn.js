@@ -38,9 +38,10 @@ class SignIn extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
-        if (data) {
-          this.saveTokeninLocalStorage(data.token)
-          this.props.loadUser(data.user);
+        if (data.id) {
+          // code for passport
+          // this.saveTokeninLocalStorage(data.token)
+          this.props.loadUser(data);
           this.props.onRouteChange("home");
         } else {
           this.onWrongCredentials();
